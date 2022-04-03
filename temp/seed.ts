@@ -53,6 +53,7 @@ const seed = async () => {
       await db.listings.insertOne(listing)
     }
 
+    console.log('[seed] : completed!!!');
   } catch (err) {
     throw new Error('Failed to seed database');
   }
