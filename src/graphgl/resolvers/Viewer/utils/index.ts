@@ -1,10 +1,19 @@
 import { Database, User } from '../../../../lib/types';
 import { Google } from '../../../../lib/api';
+import { Request, Response } from 'express';
+
+export const cookieOptions = {
+  httpOnly: true,
+  sameSite: true,
+  signed: true,
+  secure: process.env.NODE_ENV !== 'development',
+};
 
 export const logInViaGoogle = async (
   code: string,
   token: string,
   db: Database,
+  res: Response
 ): Promise<User | undefined> => {
   const { user } = await Google.logIn(code);
 
@@ -65,6 +74,32 @@ export const logInViaGoogle = async (
     });
 
     viewer = (await db.users.findOne({ _id: userId })) as User;
+  }
+
+  res.cookie("viewer", userId, {
+    ...cookieOptions,
+    maxAge: 365 * 24 * 60 * 60 * 1000
+  })
+
+  return viewer;
+};
+
+export const logInViaCookie = async (
+  token: string,
+  db: Database,
+  req: Request,
+  res: Response,
+): Promise<User | undefined> => {
+  const updateRes = await db.users.findOneAndUpdate(
+    { _id: req.signedCookies.viewer },
+    { $set: { token } },
+    { upsert: true, returnDocument: 'after' },
+  );
+
+  let viewer = updateRes.value as User;
+
+  if (!viewer) {
+    res.clearCookie('viewer', cookieOptions);
   }
 
   return viewer;
