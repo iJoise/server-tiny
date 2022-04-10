@@ -56,7 +56,7 @@ export const logInViaGoogle = async (
         token,
       },
     },
-    { upsert: true, returnDocument: 'after' },
+    { returnDocument: 'after' },
   );
 
   let viewer = updateRes.value as User;
@@ -93,7 +93,7 @@ export const logInViaCookie = async (
   const updateRes = await db.users.findOneAndUpdate(
     { _id: req.signedCookies.viewer },
     { $set: { token } },
-    { upsert: true, returnDocument: 'after' },
+    { returnDocument: 'after' },
   );
 
   let viewer = updateRes.value as User;
