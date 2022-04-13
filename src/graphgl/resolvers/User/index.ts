@@ -53,7 +53,7 @@ export const userResolvers = {
           total: 0,
           result: []
         };
-        console.log('log', user.bookings);
+
         let cursor = await db.bookings.find({
           _id: { $in: user.bookings }
         });
