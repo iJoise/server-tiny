@@ -1,6 +1,6 @@
 import express, { Application } from 'express';
 import { ApolloServer } from 'apollo-server-express';
-import { typeDefs, resolvers } from './graphgl';
+import { typeDefs, resolvers } from './graphql';
 import cookieParser from 'cookie-parser';
 import dotenv from 'dotenv';
 import { connectDatabase } from './database';

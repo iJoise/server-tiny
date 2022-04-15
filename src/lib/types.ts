@@ -1,4 +1,4 @@
-import { Collection, ObjectId } from "mongodb";
+import { Collection, ObjectId } from 'mongodb';
 
 export interface Viewer {
   _id?: string;
@@ -9,8 +9,8 @@ export interface Viewer {
 }
 
 export enum ListingType {
-  Apartment = "apartment",
-  House = "house"
+  Apartment = 'APARTMENT',
+  House = 'HOUSE',
 }
 
 export interface BookingsIndexMonth {
@@ -44,6 +44,7 @@ export interface Listing {
   bookingsIndex: BookingsIndexYear;
   price: number;
   numOfGuests: number;
+  authorized?: boolean;
 }
 
 export interface User {
